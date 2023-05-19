@@ -51,6 +51,11 @@
     margin-right: auto;
 }
 
+.sprint-epic-issues-count {
+    font-size: 12px;
+    color: #888;
+}
+
 .task-card {
     border-radius: 4px;
     max-height: 200px;

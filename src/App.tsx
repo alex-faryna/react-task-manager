@@ -187,7 +187,7 @@ function App() {
 
     return <>
         <NavigationMenu items={navigationItems}></NavigationMenu>
-        <SprintView statusList={statusList} sprint={sprint}></SprintView>
+        <SprintView statuses={statusList} sprint={sprint}></SprintView>
     </>
 }
 
