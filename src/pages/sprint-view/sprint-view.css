@@ -1,0 +1,39 @@
+.sprint-view {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.sprint-epic-view {
+    width: 100%;
+    padding: .5rem;
+    border-radius: 6px;
+}
+
+.sprint-epic-title {
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.sprint-epic-tasks {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sprint-epic-task {
+    flex: 100% 1 0;
+    min-width: 150px;
+    max-width: 300px;
+    background: #ccc;
+    border-radius: 4px;
+    height: 150px;
+}
+
+.sprint-epic-tasks > .sprint-epic-task:first-child {
+    margin-left: auto;
+}
+
+.sprint-epic-tasks > .sprint-epic-task:last-child {
+    margin-right: auto;
+}
