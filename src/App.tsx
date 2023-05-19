@@ -146,9 +146,48 @@ function App() {
         { id: 1, label: 'Bugs'}
     ];
 
+    const sprint = {
+        id: 0,
+        epics: epicsList,
+        tasks: {
+            total: 5,
+            data: {
+                0: [
+                    {
+                        id: 0,
+                        status: 0,
+                        title: 'Test task 1'
+                    },
+                    {
+                        id: 1,
+                        status: 1,
+                        title: 'Test task 2'
+                    }
+                ],
+                1: [
+                    {
+                        id: 3,
+                        status: 1,
+                        title: 'Test task 3'
+                    },
+                    {
+                        id: 4,
+                        status: 2,
+                        title: 'Test task 4'
+                    },
+                    {
+                        id: 5,
+                        status: 3,
+                        title: 'Test task 5'
+                    }
+                ],
+            }
+        }
+    }
+
     return <>
         <NavigationMenu items={navigationItems}></NavigationMenu>
-        <SprintView statusList={statusList} epicsList={epicsList}></SprintView>
+        <SprintView statusList={statusList} sprint={sprint}></SprintView>
     </>
 }
 

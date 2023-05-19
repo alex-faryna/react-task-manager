@@ -12,8 +12,17 @@
 }
 
 .sprint-epic-title {
-    margin-bottom: 0.5rem;
+    margin: 0.35rem 0 0.5rem;
     display: block;
+}
+
+.sprint-epic-toggle-icon {
+    transform: rotate(0deg);
+    transition: transform 200ms ease-out;
+}
+
+.sprint-epic-toggle-icon:not(.expanded) {
+    transform: rotate(-90deg);
 }
 
 .sprint-epic-tasks {
