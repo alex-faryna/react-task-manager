@@ -172,7 +172,7 @@ function App() {
                     },
                     {
                         id: 4,
-                        status: 2,
+                        status: 3,
                         title: 'Test task 4'
                     },
                     {

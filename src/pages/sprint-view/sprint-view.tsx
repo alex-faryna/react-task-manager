@@ -8,10 +8,11 @@ export interface Tag {
     label: string;
 }
 
-export interface TaskInSprint {
+export interface TaskInEpic {
     id: number;
     status: number;
     title: string;
+    // code
     // tags?: Tag[]; // mb not here but in FullTask
     // content
     // priority
@@ -26,7 +27,7 @@ export interface Sprint {
     epics: Epic[];
     tasks: {
         total: number;
-        data?: Record<number, TaskInSprint[]>;
+        data?: Record<number, TaskInEpic[]>;
     }
 }
 
@@ -41,7 +42,17 @@ export interface Epic {
     // description
 }
 
-function SprintRow({ title, statusList }: { title: string, statusList: Status[] }) {
+function SprintStatusHeader({ statusList }: { statusList: Status[] }) {
+    return <div className='sprint-epic-view sprint-status-header'>
+        <div className='sprint-epic-tasks'>
+            { statusList.map(status => <div key={status.id} className='sprint-epic-task-placeholder p-1 column-stretch'>
+                <span>{ status.label }</span>
+            </div>) }
+        </div>
+    </div>
+}
+
+function SprintEpic({ title, statusList, tasks }: { title: string, statusList: Status[], tasks: TaskInEpic[] }) {
     const [expanded, setExpanded] = useState(true);
     const toggle = () => setExpanded(!expanded);
 
@@ -54,8 +65,11 @@ function SprintRow({ title, statusList }: { title: string, statusList: Status[] 
         </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div className='sprint-epic-tasks'>
-                { statusList.map(status => <div key={status.id} className='sprint-epic-task'>
-
+                { statusList.map(status => <div key={status.id} className='sprint-epic-task-placeholder radius-6 column-stretch'>
+                    { tasks.filter(task => task.status === status.id).map(task => <div key={task.id} className='task-card'>
+                        <p>{ task.title }</p>
+                        <p>{ statusList.find(status => status.id === task.status)?.label || 'No status' }</p>
+                    </div>) }
                 </div>) }
             </div>
         </Collapse>
@@ -63,9 +77,16 @@ function SprintRow({ title, statusList }: { title: string, statusList: Status[] 
 }
 
 function SprintView({ sprint, statusList }: { sprint: Sprint, statusList: Status[] }) {
-    return <main className='sprint-view'>
-        { sprint.epics.map(epic => <SprintRow key={epic.id} title={epic.label} statusList={statusList}></SprintRow>) }
-    </main>
+    return <div className='column-stretch w-full'>
+        <span>Total: { sprint.tasks.total || 0 }</span>
+        <main className='sprint-view'>
+            <SprintStatusHeader statusList={statusList}></SprintStatusHeader>
+            { sprint.epics.map(epic => <SprintEpic key={epic.id}
+                                                  title={epic.label}
+                                                  tasks={sprint.tasks.data?.[epic.id] || []}
+                                                  statusList={statusList}></SprintEpic>) }
+        </main>
+    </div>
 }
 
 export default SprintView;

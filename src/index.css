@@ -14,7 +14,6 @@ body {
   display: flex;
 }
 
-
 * {
   box-sizing: border-box;
 }
@@ -43,10 +42,28 @@ code {
   align-items: center;
 }
 
+.column-stretch {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .pointer {
   cursor: pointer;
 }
 
 .no-select {
   user-select: none;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.radius-6 {
+  border-radius: 6px;
+}
+
+.p-1 {
+  padding: 1rem;
 }
