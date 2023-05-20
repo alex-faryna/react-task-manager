@@ -109,14 +109,24 @@ export const organizerSlice = createSlice({
             state.loading = 'loaded';
         },
         taskDragged: (state, { payload }: PayloadAction<{ sprint: number, from: DragLocationData, to: DragLocationData }>) => {
-            /*console.log(payload.from);
+            console.log(payload.from);
             console.log(payload.to);
             const from = payload.from;
+            const to = payload.to;
             const sprint = state.sprints.find(sprint => sprint.id === payload.sprint);
-            if (sprint) {
-                sprint.tasks[from.epic] = [];
+            if (!sprint) return;
+            const epic = sprint.tasks[from.epic];
+            if (!epic) return;
+            const tasks = epic[from.status];
+            if (!tasks) return;
+            const task = tasks.splice(from.idx, 1);
+            if (!task) return;
+            const status = sprint.tasks[to.epic][to.status];
+            if (status) {
+                sprint.tasks[to.epic][to.status].splice(to.idx, 0, task[0]);
+            } else {
+                sprint.tasks[to.epic][to.status] = [task[0]];
             }
-            console.log(sprint);*/
         }
     },
 });
