@@ -46,23 +46,22 @@ function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], task
     const [statusCount, setStatusCount] = useState<Record<number, number>>({});
 
     useEffect(() => {
-        void calculateCounts(tasks);
+        void calculateCounts(tasks, statuses);
     }, [tasks]);
 
-    async function calculateCounts(rawTasks: Record<number, TaskInEpic[]>): Promise<void> {
+    async function calculateCounts(rawTasks: Record<number, TaskInEpic[]>, statuses: Status[]): Promise<void> {
         const tasks = Object.values(rawTasks || {}).flat();
         const counts = tasks.reduce((res, task) => {
             res[task.status] = (res?.[task.status] || 0) + 1;
             return res;
-        }, {} as Record<number, number>);
-        console.log(counts);
+        }, statuses.reduce((a, v) => ({ ...a, [v.id]: 0}), {}) as Record<number, number>);
         setStatusCount(counts);
     }
 
     return <div className='sprint-epic-view sprint-status-header'>
         <div className='sprint-epic-tasks'>
             { statuses.map(status => <div key={status.id} className='sprint-epic-task-placeholder p-1 column-stretch'>
-                <span>{ status.label } { statusCount?.[status.id] || '' }</span>
+                <span>{ status.label } { statusCount?.[status.id] }</span>
             </div>) }
         </div>
     </div>
