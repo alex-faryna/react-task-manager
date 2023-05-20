@@ -2,45 +2,8 @@ import Collapse from "@mui/material/Collapse";
 import {useEffect, useState} from "react";
 import './sprint-view.css'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
-export interface Tag {
-    id: number;
-    label: string;
-}
-
-export interface TaskInEpic {
-    id: number;
-    status: number;
-    title: string;
-    // code
-    // tags?: Tag[]; // mb not here but in FullTask
-    // content
-    // priority
-    // assignee
-}
-
-// need id because of dates etc
-export interface Sprint {
-    id: number;
-    // dates
-    // description
-    epics: Epic[];
-    tasks: {
-        total: number;
-        data?: Record<number, TaskInEpic[]>;
-    }
-}
-
-export interface Status {
-    id: number;
-    label: string;
-}
-
-export interface Epic {
-    id: number;
-    label: string;
-    // description
-}
+import {Sprint, TaskInEpic} from "../../models/sprint.model";
+import {Epic, Status} from "../../store/task-organizer-state";
 
 function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], tasks?: Record<number, TaskInEpic[]> }) {
     const [statusCount, setStatusCount] = useState<Record<number, number>>({});
@@ -94,14 +57,18 @@ function SprintEpic({ title, statuses, tasks = [] }: { title: string, statuses: 
     </section>
 }
 
-function SprintView({ sprint, statuses }: { sprint: Sprint, statuses: Status[] }) {
+// mb just id of sprint here needed idk
+function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint: Sprint, epics: Epic[], statuses: Status[] }) {
+    const total = epics.reduce((total, epic) => total + (sprint.tasks?.[epic.id]?.length || 0), 0);
     return <div className='column-stretch w-full'>
-        <span>Total: { sprint.tasks.total || 0 }</span>
+        {
+            <span>Total: { total }</span>
+        }
         <main className='sprint-view'>
-            <SprintStatusHeader statuses={statuses} tasks={sprint.tasks.data}></SprintStatusHeader>
-            { sprint.epics.map(epic => <SprintEpic key={epic.id}
+            <SprintStatusHeader statuses={statuses} tasks={sprint.tasks}></SprintStatusHeader>
+            { epics.map(epic => <SprintEpic key={epic.id}
                                                   title={epic.label}
-                                                  tasks={sprint.tasks.data?.[epic.id]}
+                                                  tasks={sprint.tasks?.[epic.id]}
                                                   statuses={statuses}></SprintEpic>) }
         </main>
     </div>

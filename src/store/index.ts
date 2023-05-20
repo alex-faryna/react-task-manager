@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import organizerReducer, {TaskOrganizerState} from './taskOrganizerState'
+import organizerReducer, {TaskOrganizerState} from './task-organizer-state'
 
 export interface RootState {
     organizer: TaskOrganizerState,

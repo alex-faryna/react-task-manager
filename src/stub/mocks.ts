@@ -1,8 +1,8 @@
 import AxiosMockAdapter from "axios-mock-adapter";
 import axios from 'axios';
 import names from "./names.stub";
-import {Student} from "../models/student.model";
-import {skipToken} from "@reduxjs/toolkit/query";
+
+type Student = any;
 
 const mock = new AxiosMockAdapter(axios, { delayResponse: 650 });
 
