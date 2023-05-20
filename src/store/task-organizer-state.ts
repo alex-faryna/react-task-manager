@@ -109,8 +109,6 @@ export const organizerSlice = createSlice({
             state.loading = 'loaded';
         },
         taskDragged: (state, { payload }: PayloadAction<{ sprint: number, from: DragLocationData, to: DragLocationData }>) => {
-            console.log(payload.from);
-            console.log(payload.to);
             const from = payload.from;
             const to = payload.to;
             const sprint = state.sprints.find(sprint => sprint.id === payload.sprint);
