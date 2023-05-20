@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {Student} from "../models/student.model";
 
-export type StudentsState = {
+export type TaskOrganizerState = {
     students: Student[],
     initialLoading: 'loading' | 'error' | 'loaded',
     additionalLoading: 'loading' | 'error' | 'loaded',
 };
 
-const initialState: StudentsState = {
+const initialState: TaskOrganizerState = {
     students: [],
     initialLoading: 'loading',
     additionalLoading: 'loaded'

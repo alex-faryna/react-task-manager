@@ -1,8 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit";
-import studentsReducer, {StudentsState} from './studentsState'
+import studentsReducer, {TaskOrganizerState} from './taskOrganizerState'
 
 export interface RootState {
-    students: StudentsState,
+    students: TaskOrganizerState,
 }
 
 const logger = (store: { getState: () => any; }) => (next: (arg0: any) => any) => (action: { type: any; }) => {
