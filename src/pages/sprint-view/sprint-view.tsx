@@ -2,20 +2,25 @@ import Collapse from "@mui/material/Collapse";
 import {useEffect, useState} from "react";
 import './sprint-view.css'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import {Sprint, TaskInEpic} from "../../models/sprint.model";
+import {Sprint, TaskInEpic, TasksInEpic} from "../../models/sprint.model";
 import {Epic, Status, taskDragged} from "../../store/task-organizer-state";
 import {DragDropContext, Draggable, DraggableLocation, Droppable, DropResult} from "react-beautiful-dnd";
 import {useDispatch} from "react-redux";
 
-function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], tasks?: Record<number, TaskInEpic[]> }) {
+
+function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], tasks?: Record<number, TasksInEpic> }) {
     const [statusCount, setStatusCount] = useState<Record<number, number>>({});
 
     useEffect(() => {
         void calculateCounts(tasks, statuses);
     }, [tasks]);
 
-    async function calculateCounts(rawTasks: Record<number, TaskInEpic[]>, statuses: Status[]): Promise<void> {
-        const tasks = Object.values(rawTasks || {}).flat();
+    async function calculateCounts(rawTasks: Record<number, TasksInEpic>, statuses: Status[]): Promise<void> {
+        const tasks = Object.values(rawTasks).flatMap((statusData) =>
+            Object.entries(statusData).flatMap(([innerKey, taskArray]) =>
+                taskArray.map((task) => ({ ...task, status: Number(innerKey) }))
+        ));
+
         const counts = tasks.reduce((res, task) => {
             res[task.status] = (res?.[task.status] || 0) + 1;
             return res;
@@ -32,7 +37,8 @@ function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], task
     </div>
 }
 
-function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Status[], tasks?: TaskInEpic[] }) {
+/*
+function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Status[], tasks?: TasksInEpic }) {
     const [expanded, setExpanded] = useState(true);
     const toggle = () => setExpanded(!expanded);
 
@@ -78,11 +84,16 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
     </section>
 }
 
+*/
+
+
 // mb just id of sprint here needed idk
 function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint: Sprint, epics: Epic[], statuses: Status[] }) {
     const dispatch = useDispatch();
 
-    const total = epics.reduce((total, epic) => total + (sprint.tasks?.[epic.id]?.length || 0), 0);
+    const total = Object.values(sprint.tasks).reduce((total, epic) =>
+        total + Object.values(epic).reduce((t, status) => t + status.length ,0), 0);
+
 
     const convertDropData = (data: DraggableLocation) => {
         const [_, epic, status] = data.droppableId.split('-');
@@ -109,11 +120,12 @@ function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint
         }
         <DragDropContext onDragEnd={dragEnd}>
             <main className='sprint-view'>
-                <SprintStatusHeader statuses={statuses} tasks={sprint.tasks}></SprintStatusHeader>
-                { epics.map(epic => <SprintEpic key={epic.id}
+                { <SprintStatusHeader statuses={statuses} tasks={sprint.tasks}></SprintStatusHeader> }
+                { /* epics.map(epic => <SprintEpic key={epic.id}
                                                 epic={epic}
                                                 tasks={sprint.tasks?.[epic.id]}
-                                                statuses={statuses}></SprintEpic>) }
+                                                statuses={statuses}></SprintEpic>) */}
+
             </main>
         </DragDropContext>
     </div>

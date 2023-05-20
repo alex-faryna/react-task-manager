@@ -1,7 +1,7 @@
 
 export interface TaskInEpic {
     id: number;
-    status: number;
+    // status: number;
     title: string;
     // code
     // tags?: Tag[]; // mb not here but in FullTask
@@ -9,6 +9,9 @@ export interface TaskInEpic {
     // priority
     // assignee
 }
+
+// status -> tasks
+export type TasksInEpic = Record<number, TaskInEpic[]>;
 
 // need id because of dates etc
 // mb tasks will not go here and will have it's own many url's: .../sprint/{id}/tasks    .../user/{id}/tasks etc
@@ -19,5 +22,5 @@ export interface Sprint {
     // dates
     // description
     // statuses to omit mb
-    tasks: Record<number, TaskInEpic[]>;
+    tasks: Record<number, TasksInEpic>;
 }

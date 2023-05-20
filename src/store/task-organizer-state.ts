@@ -50,35 +50,38 @@ const epics = [
 const sprint = {
     id: 0,
     tasks: {
-        0: [
-            {
-                id: 0,
-                status: 0,
-                title: 'Test task 1'
-            },
-            {
-                id: 1,
-                status: 1,
-                title: 'Test task 2'
-            }
-        ],
-        1: [
-            {
-                id: 3,
-                status: 1,
-                title: 'Test task 3'
-            },
-            {
-                id: 4,
-                status: 3,
-                title: 'Test task 4'
-            },
-            {
-                id: 5,
-                status: 3,
-                title: 'Test task 5'
-            }
-        ],
+        0: {
+            0: [
+                {
+                    id: 0,
+                    title: 'Test task 1'
+                }
+            ],
+            1: [
+                {
+                    id: 1,
+                    title: 'Test task 2'
+                }
+            ],
+        },
+        1: {
+            1: [
+                {
+                    id: 3,
+                    title: 'Test task 3'
+                }
+            ],
+            3: [
+                {
+                    id: 4,
+                    title: 'Test task 4'
+                },
+                {
+                    id: 5,
+                    title: 'Test task 5'
+                }
+            ]
+        },
     }
 }
 
