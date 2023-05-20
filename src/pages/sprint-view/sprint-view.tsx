@@ -3,7 +3,9 @@ import {useEffect, useState} from "react";
 import './sprint-view.css'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {Sprint, TaskInEpic} from "../../models/sprint.model";
-import {Epic, Status} from "../../store/task-organizer-state";
+import {Epic, Status, taskDragged} from "../../store/task-organizer-state";
+import {DragDropContext, Draggable, DraggableLocation, Droppable, DropResult} from "react-beautiful-dnd";
+import {useDispatch} from "react-redux";
 
 function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], tasks?: Record<number, TaskInEpic[]> }) {
     const [statusCount, setStatusCount] = useState<Record<number, number>>({});
@@ -30,13 +32,13 @@ function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], task
     </div>
 }
 
-function SprintEpic({ title, statuses, tasks = [] }: { title: string, statuses: Status[], tasks?: TaskInEpic[] }) {
+function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Status[], tasks?: TaskInEpic[] }) {
     const [expanded, setExpanded] = useState(true);
     const toggle = () => setExpanded(!expanded);
 
     return <section className='sprint-epic-view'>
         <div className='row pointer' onClick={toggle}>
-            <span className='sprint-epic-title no-select'>{ title }</span>
+            <span className='sprint-epic-title no-select'>{ epic.label }</span>
             <div className={`sprint-epic-toggle-icon ${expanded ? 'expanded' : ''}`}>
                 <ArrowDropDownIcon></ArrowDropDownIcon>
             </div>
@@ -46,12 +48,31 @@ function SprintEpic({ title, statuses, tasks = [] }: { title: string, statuses: 
         </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div className='sprint-epic-tasks'>
-                { statuses.map(status => <div key={status.id} className='sprint-epic-task-placeholder radius-6 column-stretch'>
-                    { tasks.filter(task => task.status === status.id).map(task => <div key={task.id} className='task-card'>
-                        <p>{ task.title }</p>
-                        <p>{ statuses.find(status => status.id === task.status)?.label || 'No status' }</p>
-                    </div>) }
-                </div>) }
+                { statuses.map(status =>
+                    <Droppable key={status.id} droppableId={`droppable-${epic.id}-${status.id}`} type='TASK'>
+                        {
+                            (droppableProvided, snapshot) =>
+                                <div {...droppableProvided.droppableProps}
+                                     ref={droppableProvided.innerRef}
+                                     className='sprint-epic-task-placeholder radius-6 column-stretch'>
+                                    { tasks.filter(task => task.status === status.id).map((task, index) =>
+                                        <Draggable key={task.id} draggableId={`draggable-${task.id}`} index={index}>
+                                            {
+                                                (draggableProvided, snapshot) =>
+                                                    <div ref={draggableProvided.innerRef}
+                                                         {...draggableProvided.draggableProps}
+                                                         {...draggableProvided.dragHandleProps}
+                                                         className='task-card'>
+                                                        <p>{ task.title }</p>
+                                                        <p>{ statuses.find(status => status.id === task.status)?.label || 'No status' }</p>
+                                                    </div>
+                                            }
+                                        </Draggable>
+                                    ) }
+                                </div>
+                        }
+                    </Droppable>
+                ) }
             </div>
         </Collapse>
     </section>
@@ -59,18 +80,42 @@ function SprintEpic({ title, statuses, tasks = [] }: { title: string, statuses: 
 
 // mb just id of sprint here needed idk
 function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint: Sprint, epics: Epic[], statuses: Status[] }) {
+    const dispatch = useDispatch();
+
     const total = epics.reduce((total, epic) => total + (sprint.tasks?.[epic.id]?.length || 0), 0);
+
+    const convertDropData = (data: DraggableLocation) => {
+        const [_, epic, status] = data.droppableId.split('-');
+        return {
+            idx: data.index,
+            epic: +epic,
+            status: +status
+        }
+    }
+
+    const dragEnd = (data: DropResult) => {
+        if (data.reason === 'DROP' && data.destination) {
+            dispatch(taskDragged({
+                sprint: sprint.id,
+                from: convertDropData(data.source),
+                to: convertDropData(data.destination),
+            }));
+        }
+    }
+
     return <div className='column-stretch w-full'>
         {
             <span>Total: { total }</span>
         }
-        <main className='sprint-view'>
-            <SprintStatusHeader statuses={statuses} tasks={sprint.tasks}></SprintStatusHeader>
-            { epics.map(epic => <SprintEpic key={epic.id}
-                                                  title={epic.label}
-                                                  tasks={sprint.tasks?.[epic.id]}
-                                                  statuses={statuses}></SprintEpic>) }
-        </main>
+        <DragDropContext onDragEnd={dragEnd}>
+            <main className='sprint-view'>
+                <SprintStatusHeader statuses={statuses} tasks={sprint.tasks}></SprintStatusHeader>
+                { epics.map(epic => <SprintEpic key={epic.id}
+                                                epic={epic}
+                                                tasks={sprint.tasks?.[epic.id]}
+                                                statuses={statuses}></SprintEpic>) }
+            </main>
+        </DragDropContext>
     </div>
 }
 

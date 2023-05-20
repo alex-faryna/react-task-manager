@@ -29,7 +29,6 @@ function App() {
     const dispatch = useDispatch();
     const state = useSelector((state: RootState) => state.organizer);
     const loading = useSelector((state: RootState) => ['loading', 'idle'].includes(state.organizer.loading));
-    const loaded = useSelector((state: RootState) => state.organizer.loading === 'loaded');
 
     useEffect(() => {
         dispatch(stubDataLoaded());

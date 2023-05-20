@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {Sprint} from "../models/sprint.model";
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Sprint, TaskInEpic} from "../models/sprint.model";
 
 export interface Status {
     id: number;
@@ -82,6 +82,12 @@ const sprint = {
     }
 }
 
+export interface DragLocationData {
+    epic: number;
+    status: number;
+    idx: number;
+}
+
 // immer.js under the hood
 export const organizerSlice = createSlice({
     name: 'organizer',
@@ -99,12 +105,19 @@ export const organizerSlice = createSlice({
             state.sprints = [sprint];
             state.loading = 'loaded';
         },
-        /* dataLoaded: (state, { payload }: PayloadAction<{ additional: boolean, students: Student[] }>) => {
-            state.loading = 'loaded';
-        }, */
+        taskDragged: (state, { payload }: PayloadAction<{ sprint: number, from: DragLocationData, to: DragLocationData }>) => {
+            /*console.log(payload.from);
+            console.log(payload.to);
+            const from = payload.from;
+            const sprint = state.sprints.find(sprint => sprint.id === payload.sprint);
+            if (sprint) {
+                sprint.tasks[from.epic] = [];
+            }
+            console.log(sprint);*/
+        }
     },
 });
 
-export const { setLoading, setError, stubDataLoaded } = organizerSlice.actions;
+export const { setLoading, setError, stubDataLoaded, taskDragged } = organizerSlice.actions;
 
 export default organizerSlice.reducer;
