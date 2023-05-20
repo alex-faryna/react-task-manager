@@ -76,6 +76,7 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
                                             }
                                         </Draggable>
                                     ) }
+                                    { droppableProvided.placeholder }
                                 </div>
                         }
                     </Droppable>
@@ -85,7 +86,7 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
     </section>
 }
 
-
+// try to change the status while dragging :)
 // mb just id of sprint here needed idk
 function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint: Sprint, epics: Epic[], statuses: Status[] }) {
     const dispatch = useDispatch();
