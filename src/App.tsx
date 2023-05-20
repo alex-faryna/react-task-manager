@@ -12,10 +12,10 @@ function App2() {
     const [search, setSearch] = useState('');
     const [dialogData, setDialogData] = useState<Student | null>(null);
 
-    const state = useSelector((state: RootState) => state.students);
-    const error = useSelector((state: RootState) => state.students.initialLoading === 'error');
-    const loading = useSelector((state: RootState) => state.students.initialLoading === 'loading');
-    const additionalLoading = useSelector((state: RootState) => state.students.additionalLoading === 'loading');
+    const state = useSelector((state: RootState) => state.organizer);
+    const error = useSelector((state: RootState) => state.organizer.initialLoading === 'error');
+    const loading = useSelector((state: RootState) => state.organizer.initialLoading === 'loading');
+    const additionalLoading = useSelector((state: RootState) => state.organizer.additionalLoading === 'loading');
 
     const getStubData = (additional: boolean, skip?: number) => {
         dispatch(setLoading({additional}));

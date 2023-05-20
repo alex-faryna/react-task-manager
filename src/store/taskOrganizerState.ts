@@ -14,8 +14,8 @@ const initialState: TaskOrganizerState = {
 };
 
 // immer.js under the hood
-export const studentsSlice = createSlice({
-    name: 'students',
+export const organizerSlice = createSlice({
+    name: 'organizer',
     initialState,
     reducers: {
         setLoading: (state, { payload }: PayloadAction<{ additional: boolean }>) => {
@@ -35,6 +35,6 @@ export const studentsSlice = createSlice({
     },
 });
 
-export const { setLoading, setError, dataLoaded } = studentsSlice.actions;
+export const { setLoading, setError, dataLoaded } = organizerSlice.actions;
 
-export default studentsSlice.reducer;
+export default organizerSlice.reducer;
