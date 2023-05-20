@@ -37,10 +37,11 @@ function SprintStatusHeader({ statuses, tasks = [] }: { statuses: Status[], task
     </div>
 }
 
-/*
 function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Status[], tasks?: TasksInEpic }) {
     const [expanded, setExpanded] = useState(true);
     const toggle = () => setExpanded(!expanded);
+
+    const total = Object.values(tasks).flat() || [];
 
     return <section className='sprint-epic-view'>
         <div className='row pointer' onClick={toggle}>
@@ -49,7 +50,7 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
                 <ArrowDropDownIcon></ArrowDropDownIcon>
             </div>
             <span className='sprint-epic-issues-count'>
-                { tasks.length } Issues
+                { total.length } Issues
             </span>
         </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -61,7 +62,7 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
                                 <div {...droppableProvided.droppableProps}
                                      ref={droppableProvided.innerRef}
                                      className='sprint-epic-task-placeholder radius-6 column-stretch'>
-                                    { tasks.filter(task => task.status === status.id).map((task, index) =>
+                                    { (tasks[status.id] || []).map((task, index) =>
                                         <Draggable key={task.id} draggableId={`draggable-${task.id}`} index={index}>
                                             {
                                                 (draggableProvided, snapshot) =>
@@ -70,7 +71,7 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
                                                          {...draggableProvided.dragHandleProps}
                                                          className='task-card'>
                                                         <p>{ task.title }</p>
-                                                        <p>{ statuses.find(status => status.id === task.status)?.label || 'No status' }</p>
+                                                        <p>{ statuses.find(s => status.id === s.id)?.label || 'No status' }</p>
                                                     </div>
                                             }
                                         </Draggable>
@@ -83,8 +84,6 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
         </Collapse>
     </section>
 }
-
-*/
 
 
 // mb just id of sprint here needed idk
@@ -121,11 +120,11 @@ function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint
         <DragDropContext onDragEnd={dragEnd}>
             <main className='sprint-view'>
                 { <SprintStatusHeader statuses={statuses} tasks={sprint.tasks}></SprintStatusHeader> }
-                { /* epics.map(epic => <SprintEpic key={epic.id}
+                { epics.map(epic => <SprintEpic key={epic.id}
                                                 epic={epic}
                                                 tasks={sprint.tasks?.[epic.id]}
-                                                statuses={statuses}></SprintEpic>) */}
-
+                                                statuses={statuses}></SprintEpic>)
+                }
             </main>
         </DragDropContext>
     </div>
