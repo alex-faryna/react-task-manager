@@ -44,7 +44,7 @@ function App() {
     ]
 
     return <>
-        <NavigationMenu items={navigationItems}></NavigationMenu>
+        { /* <NavigationMenu items={navigationItems}></NavigationMenu> */ }
         {
             loading ? <span>Loading</span> :
                 <SprintView statuses={state.statues} epics={state.epics} sprint={state.sprints[0]}></SprintView>
