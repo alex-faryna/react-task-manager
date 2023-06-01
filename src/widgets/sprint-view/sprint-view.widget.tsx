@@ -1,6 +1,6 @@
 import Collapse from "@mui/material/Collapse";
 import {useEffect, useState} from "react";
-import './sprint-view.css'
+import './sprint-view.widget.css'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {Sprint, TaskInEpic, TasksInEpic} from "../../models/sprint.model";
 import {Epic, Status, taskDragged} from "../../store/task-organizer-state";
@@ -88,7 +88,7 @@ function SprintEpic({ epic, statuses, tasks = [] }: { epic: Epic, statuses: Stat
 
 // try to change the status while dragging :)
 // mb just id of sprint here needed idk
-function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint: Sprint, epics: Epic[], statuses: Status[] }) {
+function SprintViewWidget({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint: Sprint, epics: Epic[], statuses: Status[] }) {
     const dispatch = useDispatch();
 
     const total = Object.values(sprint.tasks).reduce((total, epic) =>
@@ -131,4 +131,4 @@ function SprintView({ sprint = { id: 0, tasks: {} }, epics, statuses }: { sprint
     </div>
 }
 
-export default SprintView;
+export default SprintViewWidget;

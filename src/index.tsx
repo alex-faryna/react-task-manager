@@ -6,17 +6,20 @@ import App from './App';
 import {Provider} from "react-redux";
 import store from './store/index';
 import {createBrowserRouter, createRoutesFromElements, redirect, Route, RouterProvider} from "react-router-dom";
-import SprintPageExample from "./pages/sprint-page-example";
-import ProfilePage from "./pages/profile-page";
+import SprintExamplePage from "./pages/sprint-example.page";
+import ProfilePage from "./pages/profile.page";
 import {RoutesConfig} from "./routesConfig";
+import PagesPage from "./pages/pages.page";
+import CustomPage from "./pages/custom.page";
 
 const redirectFn = (to: string) => () => redirect(to);
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" Component={App}>
-            <Route path={RoutesConfig.dashboard} Component={SprintPageExample} />
-            <Route path={RoutesConfig.page} Component={ProfilePage}></Route>
+            <Route path={RoutesConfig.dashboard} Component={PagesPage} />
+            <Route path={RoutesConfig.sprintExamplePage} Component={SprintExamplePage} />
+            <Route path={RoutesConfig.page} Component={CustomPage} />
             <Route path="profile" Component={ProfilePage}>
                 <Route path="*" loader={redirectFn("") }></Route>
             </Route>

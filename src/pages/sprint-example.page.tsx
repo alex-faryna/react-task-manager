@@ -2,10 +2,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
 import React, {useEffect} from "react";
 import {stubDataLoaded} from "../store/task-organizer-state";
-import SprintView from "../widgets/sprint-view/sprint-view";
-import {Outlet} from "react-router-dom";
+import SprintViewWidget from "../widgets/sprint-view/sprint-view.widget";
 
-function SprintPageExample() {
+function SprintExamplePage() {
     const dispatch = useDispatch();
     const state = useSelector((state: RootState) => state.organizer);
     const loading = useSelector((state: RootState) => ['loading', 'idle'].includes(state.organizer.loading));
@@ -15,7 +14,7 @@ function SprintPageExample() {
     }, []);
 
     return loading ? <span>Loading</span> :
-        <SprintView statuses={state.statues} epics={state.epics} sprint={state.sprints[0]}></SprintView>
+        <SprintViewWidget statuses={state.statues} epics={state.epics} sprint={state.sprints[0]}></SprintViewWidget>
 }
 
-export default SprintPageExample;
+export default SprintExamplePage;

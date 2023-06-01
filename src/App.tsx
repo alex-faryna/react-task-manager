@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {stubDataLoaded} from "./store/task-organizer-state";
-import NavigationMenu from "./components/navigation-menu/navigation-menu";
+import NavigationMenuComponent from "./components/navigation-menu/navigation-menu.component";
 import {Outlet} from "react-router-dom";
-
 
 function App() {
     const dispatch = useDispatch();
@@ -22,7 +21,7 @@ function App() {
     ]
 
     return <>
-        <NavigationMenu items={navigationItems} />
+        <NavigationMenuComponent items={navigationItems} />
         <Outlet />
     </>
 }

@@ -1,11 +1,11 @@
-import './navigation-menu.css'
+import './navigation-menu.component.css'
 
 export interface NavigationMenuItem {
     label: string,
     icon?: string;
 }
 
-function NavigationMenu({ items, mini = false }: { items: NavigationMenuItem[], mini?: boolean }) {
+function NavigationMenuComponent({ items, mini = false }: { items: NavigationMenuItem[], mini?: boolean }) {
     return <nav className='navigation-menu'>
         { items.map((item, id) => <div key={id} className='navigation-menu-item'>
             { item.label }
@@ -28,4 +28,4 @@ function NavigationMenu({ items, mini = false }: { items: NavigationMenuItem[], 
     </nav>
 }
 
-export default NavigationMenu;
+export default NavigationMenuComponent;
