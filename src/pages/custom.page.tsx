@@ -1,75 +1,74 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
+import {CustomPageLayoutModel} from "../models/entity.model";
 
-export type Id = number;
-
-
-// ENTITIES in out system:
-/*
-   - user
-   - task
-   - period
-   -
+function UsersListWidget() {
 
 
 
- */
+    const users = [
+        {
+            id: 0,
+            name: 'Alex',
+            surname: 'Faryna'
+        },
+        {
+            id: 1,
+            name: 'Nico',
+            surname: 'Saez'
+        },
+        {
+            id: 2,
+            name: 'Liam',
+            surname: 'Arjona'
+        },
+        {
+            id: 3,
+            name: 'Alex',
+            surname: 'Feja'
+        },
+        {
+            id: 4,
+            name: 'Svyatoslav',
+            surname: 'Syvakiskyi'
+        },
+        {
+            id: 5,
+            name: 'Daivd',
+            surname: 'Gamayun'
+        },
+        {
+            id: 15,
+            name: 'Oleg',
+            surname: 'Boichuk'
+        },
+        {
+            id: 14,
+            name: 'Svyatoslav',
+            surname: 'Syvakiskyi'
+        },
+        {
+            id: 51,
+            name: 'Daivd',
+            surname: 'Gamayun'
+        },
+        {
+            id: 52,
+            name: 'Oleg',
+            surname: 'Boichuk'
+        },
+    ];
 
 
-export interface Entity {
-    id: Id;
-    type: string;
+    return <div className='widget-container border row radius-6 p-1' style={{ gap: '10px', overflow: "auto" }}>
+        {
+            users.map(user => <div key={user.id} className='column-stretch radius-6 border p-1'>
+                <span>{ user.name }</span>
+                <span>{ user.surname }</span>
+            </div>)
+        }
+    </div>
 }
-
-export interface ValueEntity extends Entity {
-    value: unknown; // idk for now
-}
-
-export interface Interface {
-    type: Id;
-    multiple: boolean; // can be array or not
-}
-
-export interface InputInterface extends Interface {
-    default: Entity;
-}
-
-export enum WidgetParamTypes {
-    NUMBER,
-    STRING,
-    BOOLEAN,
-    ENTITY
-}
-
-export interface WidgetParam {
-    type: WidgetParamTypes;
-    value: unknown;
-    multiple: boolean;
-}
-
-export interface Widget {
-    id: Id;
-    params: Record<string, WidgetParam>
-    // params?
-    inputs: InputInterface;
-    outputs?: Interface;
-}
-
-export interface WidgetLink {
-    from: Id;
-    to: Id;
-}
-
-export interface CustomPageLayout {
-    id: Id; // mb uuid
-    widgets: Widget[],
-    links?: WidgetLink[],
-}
-
-// in backend we will have api for entities
-// api/entities/user
-// api/entities/status
-// api/entities/epic
 
 
 function CustomPage() {
@@ -79,14 +78,13 @@ function CustomPage() {
 
     useEffect(() => {
         // ... load data ...
-        const loadedConfig: CustomPageLayout = {
+        const loadedConfig: CustomPageLayoutModel = {
             id: 1,
             widgets: [],
             links: [],
         }
 
         // we have entities in the backend: task, user,
-
         const config = {
             id: 111, // uuid
 
@@ -136,11 +134,20 @@ function CustomPage() {
         console.log(`make request to get config: ${pageId} ${test}`);
     }, [pageId]);
 
-    return <>
+    /*return <>
         <span>{ test }</span>
         <span onClick={() => setTest('cool')}>{ pageId }</span>
         <Link relative='path' to={'../other'}>LLL</Link>
-    </>
+    </>*/
+
+    return <div className='row relative container w-full p-2' style={{ gap: '1rem' }}>
+        <div className='container' style={{ flex: '0 0 50%' }}>
+            <UsersListWidget />
+        </div>
+        <div className='container' style={{ flex: '1 0 50%' }}>
+            Hello
+        </div>
+    </div>
 }
 
 export default CustomPage;
