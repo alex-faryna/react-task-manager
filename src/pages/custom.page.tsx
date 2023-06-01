@@ -101,55 +101,20 @@ function CustomPage() {
             // is the type configurable or not? i think for now NO
             // maybe later combine multiple sources into one input or smth
 
-
+            // to dto function for each widget, so we can compactly keep the inputs multiple or not without storgin everything
+            // the inputs for now are single only, will add multiple later
             widgets: [
-                //
                 {
                     id: 222,
-                    outputs: [
-                        {
-                            type: 'string',
-                            multiple: false,
-                        }
-                    ]
                 },
                 {
                     id: 123, // uuid
-                    inputs: [
-                        {
-                            type: 'string',
-                            multiple: false,
-                        }
-                    ],
-                    outputs: [
-                        {
-                            type: 'entity',
-                            //entity_type?: 'user-entity-uuid
-                            multiple: false
-                        }
-                    ]
                 },
                 {
                     id: 890, // uuid
-                    outputs: [
-                        {
-                            type: 'epic-entity-uuid',
-                            multiple: true
-                        }
-                    ]
                 },
                 {
                     id: 456, // uuid
-                    input: [
-                        {
-                            type: 'user-entity-uuid',
-                            multiple: false,
-                        },
-                        {
-                            type: 'epic-entity-uuid',
-                            multiple: true,
-                        }
-                    ]
                 }
             ],
             links: [
